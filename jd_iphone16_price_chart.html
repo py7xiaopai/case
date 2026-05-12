@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>iPhone16 京东价格分析</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #0f0f23; color: #e0e0e0; padding: 20px; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { color: #fff; font-size: 24px; margin-bottom: 8px; }
+.subtitle { color: #8888aa; font-size: 14px; margin-bottom: 24px; }
+.card { background: #1a1a3e; border-radius: 12px; padding: 24px; margin-bottom: 20px; border: 1px solid #2a2a5e; }
+.card h2 { color: #aabbff; font-size: 16px; font-weight: 500; margin-bottom: 16px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.sb { text-align: center; padding: 20px 12px; background: linear-gradient(135deg, #1a1a4e 0%, #2a1a5e 100%); border: 1px solid #3a3a7e; border-radius: 10px; }
+.sb .v { font-size: 26px; font-weight: 700; color: #aabbff; }
+.sb .l { font-size: 12px; color: #7777aa; margin-top: 4px; }
+.cw { height: 360px; position: relative; }
+.mg { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 800px) { .mg { grid-template-columns: 1fr; } }
+.mt { width: 100%; border-collapse: collapse; font-size: 13px; }
+.mt th, .mt td { padding: 8px 12px; text-align: right; border-bottom: 1px solid #2a2a5e; }
+.mt th { color: #7777aa; font-weight: 400; text-align: left; }
+.mt td:first-child { text-align: left; color: #aabbff; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>iPhone16 京东价格分析</h1>
+<p class="subtitle">数据: search.jd.com · 279件商品 · 自营10件</p>
+
+<div class="stats">
+<div class="sb"><div class="v">279</div><div class="l">商品数</div></div>
+<div class="sb"><div class="v">¥2,649</div><div class="l">最低价</div></div>
+<div class="sb"><div class="v">¥18,252</div><div class="l">最高价</div></div>
+<div class="sb"><div class="v">¥5,098</div><div class="l">中位数</div></div>
+<div class="sb"><div class="v">¥5,358</div><div class="l">均价</div></div>
+<div class="sb"><div class="v">10</div><div class="l">自营</div></div>
+</div>
+
+<div class="card">
+<h2>价格分布曲线</h2>
+<p style="color:#666;font-size:12px;margin-bottom:12px;">X轴 = 按价格排序的商品序号，Y轴 = 价格</p>
+<div class="cw"><canvas id="c1"></canvas></div>
+</div>
+
+<div class="card">
+<h2>价格区间分布</h2>
+<div class="cw"><canvas id="c2"></canvas></div>
+</div>
+
+<div class="card">
+<h2>各型号价格对比</h2>
+<div class="mg">
+<div class="cw" style="height:300px"><canvas id="c3"></canvas></div>
+<div>
+<table class="mt">
+<tr><th>型号</th><th>数量</th><th>最低</th><th>均价</th><th>最高</th></tr>
+<tr><td>iPhone 16 Plus</td><td>42</td><td>¥3,168</td><td>¥4,607</td><td>¥8,238</td></tr>
+<tr><td>iPhone 16 Pro</td><td>33</td><td>¥3,389</td><td>¥5,642</td><td>¥18,252</td></tr>
+<tr><td>iPhone 16 Pro Max</td><td>145</td><td>¥2,818</td><td>¥5,903</td><td>¥10,874</td></tr>
+<tr><td>iPhone 16 标准版</td><td>59</td><td>¥2,649</td><td>¥4,396</td><td>¥10,999</td></tr>
+</table>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>自营商品价格曲线</h2>
+<div class="cw" style="height:250px"><canvas id="c4"></canvas></div>
+</div>
+</div>
+<script>
+const D = {"lineLabels": ["#1", "#2", "#3", "#4", "#5", "#6", "#7", "#8", "#9", "#10", "#11", "#12", "#13", "#14", "#15", "#16", "#17", "#18", "#19", "#20", "#21", "#22", "#23", "#24", "#25", "#26", "#27", "#28", "#29", "#30", "#31", "#32", "#33", "#34", "#35", "#36", "#37", "#38", "#39", "#40", "#41", "#42", "#43", "#44", "#45", "#46", "#47", "#48", "#49", "#50", "#51", "#52", "#53", "#54", "#55", "#56", "#57", "#58", "#59", "#60", "#61", "#62", "#63", "#64", "#65", "#66", "#67", "#68", "#69", "#70", "#71", "#72", "#73", "#74", "#75", "#76", "#77", "#78", "#79", "#80", "#81", "#82", "#83", "#84", "#85", "#86", "#87", "#88", "#89", "#90", "#91", "#92", "#93", "#94", "#95", "#96", "#97", "#98", "#99", "#100", "#101", "#102", "#103", "#104", "#105", "#106", "#107", "#108", "#109", "#110", "#111", "#112", "#113", "#114", "#115", "#116", "#117", "#118", "#119", "#120", "#121", "#122", "#123", "#124", "#125", "#126", "#127", "#128", "#129", "#130", "#131", "#132", "#133", "#134", "#135", "#136", "#137", "#138", "#139", "#140", "#141", "#142", "#143", "#144", "#145", "#146", "#147", "#148", "#149", "#150", "#151", "#152", "#153", "#154", "#155", "#156", "#157", "#158", "#159", "#160", "#161", "#162", "#163", "#164", "#165", "#166", "#167", "#168", "#169", "#170", "#171", "#172", "#173", "#174", "#175", "#176", "#177", "#178", "#179", "#180", "#181", "#182", "#183", "#184", "#185", "#186", "#187", "#188", "#189", "#190", "#191", "#192", "#193", "#194", "#195", "#196", "#197", "#198", "#199", "#200", "#201", "#202", "#203", "#204", "#205", "#206", "#207", "#208", "#209", "#210", "#211", "#212", "#213", "#214", "#215", "#216", "#217", "#218", "#219", "#220", "#221", "#222", "#223", "#224", "#225", "#226", "#227", "#228", "#229", "#230", "#231", "#232", "#233", "#234", "#235", "#236", "#237", "#238", "#239", "#240", "#241", "#242", "#243", "#244", "#245", "#246", "#247", "#248", "#249", "#250", "#251", "#252", "#253", "#254", "#255", "#256", "#257", "#258", "#259", "#260", "#261", "#262", "#263", "#264", "#265", "#266", "#267", "#268", "#269", "#270", "#271", "#272", "#273", "#274", "#275", "#276", "#277", "#278", "#279"], "linePrices": [2649.0, 2818.0, 2818.0, 2818.0, 2819.0, 2859.0, 3149.0, 3168.0, 3169.0, 3225.0, 3229.23, 3349.0, 3349.0, 3349.0, 3349.0, 3349.0, 3349.0, 3349.0, 3349.0, 3349.0, 3349.0, 3379.0, 3389.0, 3389.0, 3389.0, 3389.0, 3399.0, 3399.0, 3449.0, 3449.0, 3449.0, 3478.0, 3479.0, 3479.0, 3498.0, 3499.0, 3499.0, 3499.0, 3499.0, 3499.0, 3499.0, 3499.0, 3499.0, 3499.0, 3509.0, 3529.0, 3549.0, 3549.0, 3549.0, 3589.0, 3599.0, 3599.0, 3599.0, 3599.0, 3599.0, 3618.0, 3618.0, 3618.0, 3633.59, 3636.95, 3649.0, 3660.0, 3683.0, 3699.0, 3699.0, 3718.0, 3722.93, 3729.0, 3749.0, 3759.0, 3759.0, 3759.0, 3779.0, 3783.12, 3798.0, 3799.0, 3799.0, 3807.0, 3807.0, 3809.0, 3849.0, 3849.0, 3859.0, 3899.0, 3908.0, 3919.0, 3941.0, 3959.0, 3989.36, 3999.0, 3999.0, 4041.56, 4059.0, 4133.13, 4149.0, 4149.0, 4169.0, 4199.0, 4209.0, 4219.0, 4279.0, 4319.0, 4319.0, 4348.0, 4369.0, 4388.0, 4399.0, 4497.0, 4499.0, 4499.0, 4499.0, 4499.0, 4549.0, 4554.0, 4589.0, 4609.0, 4648.0, 4649.0, 4649.0, 4649.0, 4689.0, 4739.0, 4739.0, 4778.0, 4779.0, 4779.0, 4818.5, 4909.0, 4959.0, 4959.0, 4959.0, 4959.0, 4978.0, 5009.0, 5018.0, 5018.0, 5019.0, 5049.0, 5068.0, 5098.0, 5098.0, 5099.0, 5168.0, 5168.0, 5168.0, 5169.0, 5169.0, 5189.0, 5199.0, 5199.0, 5219.0, 5229.0, 5259.0, 5308.0, 5318.0, 5318.0, 5319.0, 5349.0, 5378.0, 5459.0, 5549.0, 5598.0, 5599.0, 5620.5, 5629.0, 5639.0, 5699.0, 5699.0, 5718.0, 5767.0, 5828.0, 5829.0, 5829.0, 5849.0, 5868.0, 5868.0, 5898.0, 5918.0, 5918.0, 5918.0, 5918.0, 5999.0, 6018.0, 6018.0, 6026.0, 6069.0, 6088.0, 6118.0, 6126.0, 6189.0, 6189.0, 6189.0, 6198.0, 6218.0, 6319.0, 6319.0, 6319.0, 6328.0, 6339.0, 6368.0, 6368.0, 6379.0, 6417.0, 6428.0, 6428.0, 6469.0, 6479.0, 6499.0, 6499.0, 6499.0, 6499.0, 6528.0, 6549.0, 6549.0, 6580.0, 6679.0, 6699.0, 6748.0, 6798.0, 6799.0, 6818.0, 6818.0, 6818.0, 6818.0, 6889.0, 6918.0, 6918.0, 6949.0, 6953.6, 7009.0, 7018.0, 7028.0, 7118.0, 7218.0, 7218.0, 7218.0, 7218.0, 7218.0, 7258.0, 7278.0, 7299.0, 7328.0, 7328.0, 7328.0, 7338.0, 7338.0, 7348.0, 7348.0, 7407.0, 7418.0, 7449.0, 7518.0, 7518.0, 7528.0, 7538.0, 7648.0, 7698.0, 7748.0, 7748.0, 7898.0, 8099.0, 8238.0, 8338.0, 8358.0, 8628.0, 8668.0, 8849.0, 8930.0, 9018.0, 9128.0, 9128.0, 9168.0, 9318.0, 9368.0, 9368.0, 10798.0, 10873.5, 10999.0, 18252.0], "bucketLabels": ["¥0-2,499", "¥2,500-3,999", "¥4,000-5,499", "¥5,500-7,499", "¥7,500-9,999", "¥10,000+"], "bucketData": [0, 91, 69, 91, 24, 4], "modelNames": ["iPhone 16 Plus", "iPhone 16 Pro", "iPhone 16 Pro Max", "iPhone 16 标准版"], "modelMins": [3168.0, 3389.0, 2818.0, 2649.0], "modelAvgs": [4607.358571428571, 5642.03606060606, 5902.842275862069, 4396.043898305084], "modelMaxes": [8238.0, 18252.0, 10873.5, 10999.0], "modelCounts": [42, 33, 145, 59], "zyPrices": [3149.0, 3169.0, 3229.23, 3636.95, 3722.93, 3783.12, 3989.36, 4818.5, 5639.0, 10999.0], "zyLabels": ["#1", "#2", "#3", "#4", "#5", "#6", "#7", "#8", "#9", "#10"], "totalItems": 279, "zyCount": 10, "minPrice": 2649.0, "maxPrice": 18252.0, "medianPrice": 5098.0, "avgPrice": 5358.333225806451};
+
+new Chart(document.getElementById('c1'), {
+  type: 'line',
+  data: { labels: D.lineLabels, datasets: [{ label: '价格', data: D.linePrices,
+    borderColor: '#667eea', backgroundColor: 'rgba(102,126,234,0.08)', fill: true,
+    tension: 0.3, pointRadius: 2, pointHoverRadius: 6 }] },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { x: { ticks: { maxTicksLimit: 15, color: '#666' }, grid: { color: '#2a2a5e' } },
+      y: { title: { display: true, text: '价格 (¥)', color: '#888' }, ticks: { color: '#666' }, grid: { color: '#2a2a5e' } } } }
+});
+
+new Chart(document.getElementById('c2'), {
+  type: 'bar',
+  data: { labels: D.bucketLabels, datasets: [{ label: '商品数', data: D.bucketData,
+    backgroundColor: ['#2ecc71','#3498db','#9b59b6','#e74c3c','#f39c12','#1abc9c'], borderRadius: 4 }] },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { x: { ticks: { color: '#888' }, grid: { display: false } },
+      y: { title: { display: true, text: '数量', color: '#888' }, ticks: { color: '#666' }, grid: { color: '#2a2a5e' }, beginAtZero: true } } }
+});
+
+new Chart(document.getElementById('c3'), {
+  type: 'bar',
+  data: { labels: D.modelNames, datasets: [
+    { label: '最低', data: D.modelMins, backgroundColor: 'rgba(46,204,113,0.7)', borderRadius: 4 },
+    { label: '均价', data: D.modelAvgs, backgroundColor: 'rgba(155,89,182,0.7)', borderRadius: 4 },
+    { label: '最高', data: D.modelMaxes, backgroundColor: 'rgba(231,76,60,0.7)', borderRadius: 4 }
+  ]},
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#888' } } },
+    scales: { x: { ticks: { color: '#888' }, grid: { display: false } },
+      y: { title: { display: true, text: '价格 (¥)', color: '#888' }, ticks: { color: '#666' }, grid: { color: '#2a2a5e' } } } }
+});
+
+new Chart(document.getElementById('c4'), {
+  type: 'line',
+  data: { labels: D.zyLabels, datasets: [{ label: '自营价格', data: D.zyPrices,
+    borderColor: '#2ecc71', backgroundColor: 'rgba(46,204,113,0.1)', fill: true,
+    tension: 0.3, pointRadius: 3, pointHoverRadius: 7 }] },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { x: { ticks: { maxTicksLimit: 10, color: '#666' } },
+      y: { title: { display: true, text: '价格 (¥)', color: '#888' }, ticks: { color: '#666' }, beginAtZero: false } } }
+});
+</script></body></html>
